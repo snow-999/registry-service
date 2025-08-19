@@ -21,7 +21,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO login(UserDTO userDTO) {
-        return null;
+        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
+        if (user == null) {
+            throw new RuntimeException("email not found");
+        }
+        userDTO = userConverter.convertUserEntityToDTO(user);
+        return userDTO;
     }
 
     @Override
