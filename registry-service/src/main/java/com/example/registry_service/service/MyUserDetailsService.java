@@ -16,7 +16,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

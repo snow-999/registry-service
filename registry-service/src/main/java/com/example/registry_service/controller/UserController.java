@@ -1,7 +1,9 @@
 package com.example.registry_service.controller;
 
+import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
 import com.example.registry_service.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,15 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
-        userDTO = userService.login(userDTO);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+//    @PostMapping("/login")
+//    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
+//        userDTO = userService.login(userDTO);
+//        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+//    }
+
+    @PostMapping("login")
+    public TokenModel greatMe (@RequestBody UserDTO userModel, HttpServletResponse response) {
+        return userService.login(userModel, response);
     }
+
 }
