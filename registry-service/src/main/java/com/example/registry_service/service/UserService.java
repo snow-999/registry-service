@@ -7,4 +7,5 @@ import jakarta.servlet.http.HttpServletResponse;
 public interface UserService {
     TokenModel login(UserDTO userModel, HttpServletResponse response);
     UserDTO signup(UserDTO userDTO);
+    void deleteUser(long userId);
 }

@@ -7,6 +7,7 @@ import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
 import com.example.registry_service.entity.UserEntity;
 
+import com.example.registry_service.exception.UserNotFound;
 import org.springframework.security.authentication.AuthenticationManager;
 import com.example.registry_service.repository.UserRepository;
 import com.example.registry_service.service.JWTService;
@@ -54,6 +55,16 @@ public class UserServiceImpl implements UserService {
         userDTO = userConverter.convertUserEntityToDTO(user);
         return userDTO;
     }
+
+    @Override
+    public void deleteUser(long userId) {
+        boolean isUserExit = userRepository.existsById(userId);
+        if (!isUserExit) {
+            throw new UserNotFound("User Does Not Exit");
+        }
+        userRepository.deleteById(userId);
+    }
+
     @Override
     public TokenModel login(UserDTO userModel, HttpServletResponse response) {
         Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getName(), userModel.getPass()));

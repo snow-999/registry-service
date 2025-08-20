@@ -17,8 +17,9 @@ public class UserController {
     UserService userService;
 
 
-    @PostMapping("/signup")
+    @PostMapping("signup")
     public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO) {
+        System.out.println("DEBUG >>> Password received: '" + userDTO.getPass() + "'");
         userDTO = userService.signup(userDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
