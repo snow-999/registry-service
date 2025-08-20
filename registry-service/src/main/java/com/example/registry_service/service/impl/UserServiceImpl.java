@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 //    @Override
 //    public UserDTO login(UserDTO userDTO) {
 //        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
+        userDTO.setPass(passwordEncoder.encode(userDTO.getPass()));
         UserEntity user = userConverter.convertUserDTOToEntity(userDTO);
         user = userRepository.save(user);
         userDTO = userConverter.convertUserEntityToDTO(user);

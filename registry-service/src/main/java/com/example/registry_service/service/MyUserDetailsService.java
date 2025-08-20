@@ -20,7 +20,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(userName);
+        UserEntity user = userRepository.findByName(userName);
         UserDTO model = userConverter.convertUserEntityToDTO(user);
         if (user == null) {
             System.out.println("User Not Found");
