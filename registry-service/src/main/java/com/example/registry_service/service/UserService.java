@@ -8,4 +8,5 @@ public interface UserService {
     TokenModel login(UserDTO userModel, HttpServletResponse response);
     UserDTO signup(UserDTO userDTO);
     void deleteUser(long userId);
+    UserDTO getMyUser(long userId);
 }

@@ -1,7 +1,6 @@
 package com.example.registry_service.service.impl;
 
 
-import com.example.registry_service.controller.UserController;
 import com.example.registry_service.converter.UserConverter;
 import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
@@ -18,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,15 +38,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public UserDTO login(UserDTO userDTO) {
-//        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
-//        if (user == null) {
-//            throw new UserNotFound("user not found");
-//        }
-//        userDTO = userConverter.convertUserEntityToDTO(user);
-//        return userDTO;
-//    }
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
@@ -66,6 +58,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO getMyUser(long userId) {
+        UserDTO userDTO = new UserDTO();
+        boolean isUserExit = userRepository.existsById(userId);
+        if (!isUserExit) {
+            throw new UserNotFound("User Does Not Exit");
+        }
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        if (userEntity.isPresent()) {
+            UserEntity user = userEntity.get();
+            userDTO = userConverter.convertUserEntityToDTO(user);
+        }
+        return userDTO;
+    }
+
+    @Override
     public TokenModel login(UserDTO userModel, HttpServletResponse response) {
         Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getName(), userModel.getPass()));
         if (authentication.isAuthenticated()) {
@@ -77,9 +84,7 @@ public class UserServiceImpl implements UserService {
             jwtService.addJwtToCookie(token.getToken(),response);
             return token;
         }
-//        if (userModel.getUserName() == null) {
         throw new IllegalArgumentException();
-//        }
     }
 
 }
