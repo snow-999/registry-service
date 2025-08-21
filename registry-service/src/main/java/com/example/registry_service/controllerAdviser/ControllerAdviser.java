@@ -15,6 +15,7 @@ public class ControllerAdviser {
         return new ResponseEntity<>(errorMsg, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorModel> handleIllegalArgumentException(IllegalArgumentException ex) {
         ErrorModel errorModel = new ErrorModel(ex.getMessage());
         return new ResponseEntity<>(errorModel ,  HttpStatus.BAD_REQUEST);

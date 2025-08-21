@@ -41,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
+        if (userDTO.getName() == null || userDTO.getEmail()== null || userDTO.getPass()== null) {
+            throw new IllegalArgumentException("Please Enter Valid Inputs");
+        }
         userDTO.setPass(passwordEncoder.encode(userDTO.getPass()));
         UserEntity user = userConverter.convertUserDTOToEntity(userDTO);
         user = userRepository.save(user);
@@ -74,17 +77,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenModel login(UserDTO userModel, HttpServletResponse response) {
-        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getName(), userModel.getPass()));
-        if (authentication.isAuthenticated()) {
-            UserEntity entity = userRepository.findByName(userModel.getName());
-            userModel = userConverter.convertUserEntityToDTO(entity);
-            TokenModel token = new TokenModel();
-            System.out.println(userModel);
-            token.setToken(jwtService.generateToken(userModel));
-            jwtService.addJwtToCookie(token.getToken(),response);
-            return token;
+        if (userModel.getName() == null  || userModel.getPass()== null) {
+            throw new IllegalArgumentException("Please Enter Valid Inputs");
         }
-        throw new IllegalArgumentException();
+        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getName(), userModel.getPass()));
+        if (!authentication.isAuthenticated()) {
+            throw new IllegalArgumentException();
+        }
+        UserEntity entity = userRepository.findByName(userModel.getName());
+        userModel = userConverter.convertUserEntityToDTO(entity);
+        TokenModel token = new TokenModel();
+        System.out.println(userModel);
+        token.setToken(jwtService.generateToken(userModel));
+        jwtService.addJwtToCookie(token.getToken(),response);
+        return token;
     }
 
 }
