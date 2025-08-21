@@ -1,12 +1,15 @@
 package com.example.registry_service.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.registry_service.dto.Roles;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Setter
@@ -19,4 +22,6 @@ public class UserEntity {
     private String email;
     private String pass;
     private String phoneNumber;
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 }

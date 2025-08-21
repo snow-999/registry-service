@@ -21,4 +21,5 @@ public class UserDTO {
             message = "Invalid Egyptian phone number"
     )
     private String phoneNumber;
+    private Roles role;
 }

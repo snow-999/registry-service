@@ -13,6 +13,7 @@ public class UserConverter {
         user.setPass(userDTO.getPass());
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setRole(userDTO.getRole());
         return user;
     }
 
@@ -23,6 +24,7 @@ public class UserConverter {
         dto.setName(userEntity.getName());
         dto.setPass(userEntity.getPass());
         dto.setPhoneNumber(userEntity.getPhoneNumber());
+        dto.setRole(userEntity.getRole());
         return dto;
     }
 
