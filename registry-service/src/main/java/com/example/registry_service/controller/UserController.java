@@ -16,7 +16,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
     @PostMapping("signup")
     public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO) {
         System.out.println("DEBUG >>> Password received: '" + userDTO.getPass() + "'");
@@ -24,7 +23,7 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("myuser")
+    @GetMapping("myuser/{id}")
     public ResponseEntity<UserDTO> getMyUser(@PathVariable long id) {
         UserDTO userDTO = userService.getMyUser(id);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);

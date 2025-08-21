@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public TokenModel login(UserDTO userModel, HttpServletResponse response) {
         Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getName(), userModel.getPass()));
         if (authentication.isAuthenticated()) {
-            UserEntity entity = userRepository.findByEmail(userModel.getEmail());
+            UserEntity entity = userRepository.findByName(userModel.getName());
             userModel = userConverter.convertUserEntityToDTO(entity);
             TokenModel token = new TokenModel();
             System.out.println(userModel);
