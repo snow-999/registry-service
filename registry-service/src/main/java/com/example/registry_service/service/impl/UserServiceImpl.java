@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,6 +83,25 @@ public class UserServiceImpl implements UserService {
             UserEntity user = userEntity.get();
             user.setName(userDTO.getName());
             user.setPhoneNumber(userDTO.getPhoneNumber());
+            UserDTO dto = userConverter.convertUserEntityToDTO(user);
+            userRepository.save(user);
+            return dto;
+        }
+        throw new UserNotFound("No User With This Id");
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<UserEntity> userEntities = userRepository.findAll();
+        return userEntities.stream().map(userConverter::convertUserEntityToDTO).toList();
+    }
+
+    @Override
+    public UserDTO addNewAdmin(UserDTO userDTO, long userId) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        if (userEntity.isPresent()) {
+            UserEntity user = userEntity.get();
+            user.setRole(userDTO.getRole());
             UserDTO dto = userConverter.convertUserEntityToDTO(user);
             userRepository.save(user);
             return dto;

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1")
 public class UserController {
@@ -42,5 +44,23 @@ public class UserController {
 
 
     // TODO see list of users
+    @GetMapping("getallusers")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> userDTOList = userService.getAllUsers();
+        return new ResponseEntity<>(userDTOList, HttpStatus.OK);
+    }
 
+    // TODO delete user
+    @DeleteMapping("deleteuser/{userId}")
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable long userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    // TODO add new admin
+    @PutMapping("addnewadmin")
+    public ResponseEntity<UserDTO> addNewAdmin(@RequestBody UserDTO userDTO, @PathVariable long userId) {
+        userDTO = userService.addNewAdmin(userDTO, userId);
+        return new ResponseEntity<>(userDTO, HttpStatus.ACCEPTED);
+    }
 }
