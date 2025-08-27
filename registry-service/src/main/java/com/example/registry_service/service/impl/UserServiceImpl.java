@@ -2,6 +2,7 @@ package com.example.registry_service.service.impl;
 
 
 import com.example.registry_service.converter.UserConverter;
+import com.example.registry_service.dto.Roles;
 import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
 import com.example.registry_service.entity.UserEntity;
@@ -97,11 +98,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO addNewAdmin(UserDTO userDTO, long userId) {
+    public UserDTO addNewAdmin(Roles roleName, long userId) {
+        System.out.println("did function even works?");
         Optional<UserEntity> userEntity = userRepository.findById(userId);
+        System.out.println("im here");
         if (userEntity.isPresent()) {
             UserEntity user = userEntity.get();
-            user.setRole(userDTO.getRole());
+            System.out.println(user);
+            user.setRole(roleName);
             UserDTO dto = userConverter.convertUserEntityToDTO(user);
             userRepository.save(user);
             return dto;

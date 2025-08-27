@@ -1,5 +1,6 @@
 package com.example.registry_service.service;
 
+import com.example.registry_service.dto.Roles;
 import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,5 +14,5 @@ public interface UserService {
     UserDTO getMyUser(long userId);
     UserDTO updateUser(UserDTO userDTO, long userId);
     List<UserDTO> getAllUsers();
-    UserDTO addNewAdmin(UserDTO userDTO, long userId);
+    UserDTO addNewAdmin(Roles roleName, long userId);
 }

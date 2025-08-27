@@ -1,5 +1,6 @@
 package com.example.registry_service.controller;
 
+import com.example.registry_service.dto.Roles;
 import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
 import com.example.registry_service.service.UserService;
@@ -58,9 +59,9 @@ public class UserController {
     }
 
     // TODO add new admin
-    @PutMapping("addnewadmin")
-    public ResponseEntity<UserDTO> addNewAdmin(@RequestBody UserDTO userDTO, @PathVariable long userId) {
-        userDTO = userService.addNewAdmin(userDTO, userId);
+    @PutMapping("addnewadmin/{userId}")
+    public ResponseEntity<UserDTO> addNewAdmin(@RequestParam Roles roleName, @PathVariable long userId) {
+        UserDTO userDTO = userService.addNewAdmin(roleName, userId);
         return new ResponseEntity<>(userDTO, HttpStatus.ACCEPTED);
     }
 }
