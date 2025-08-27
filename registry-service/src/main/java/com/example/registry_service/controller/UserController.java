@@ -18,7 +18,6 @@ public class UserController {
 
     @PostMapping("signup")
     public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO) {
-        System.out.println("DEBUG >>> Password received: '" + userDTO.getPass() + "'");
         userDTO = userService.signup(userDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -33,5 +32,15 @@ public class UserController {
     public TokenModel greatMe (@RequestBody UserDTO userModel, HttpServletResponse response) {
         return userService.login(userModel, response);
     }
+
+    // TODO edit user data except email
+    @PutMapping("updateuser/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable long userId) {
+        userDTO = userService.updateUser(userDTO, userId);
+        return new ResponseEntity<>(userDTO, HttpStatus.ACCEPTED);
+    }
+
+
+    // TODO see list of users
 
 }

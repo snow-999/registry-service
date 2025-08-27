@@ -76,6 +76,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO updateUser(UserDTO userDTO, long userId) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        if (userEntity.isPresent()) {
+            UserEntity user = userEntity.get();
+            user.setName(userDTO.getName());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+            UserDTO dto = userConverter.convertUserEntityToDTO(user);
+            userRepository.save(user);
+            return dto;
+        }
+        throw new UserNotFound("No User With This Id");
+    }
+
+    @Override
     public TokenModel login(UserDTO userModel, HttpServletResponse response) {
         if (userModel.getName() == null  || userModel.getPass()== null) {
             throw new IllegalArgumentException("Please Enter Valid Inputs");
