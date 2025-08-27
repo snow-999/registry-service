@@ -99,9 +99,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO addNewAdmin(Roles roleName, long userId) {
-        System.out.println("did function even works?");
         Optional<UserEntity> userEntity = userRepository.findById(userId);
-        System.out.println("im here");
         if (userEntity.isPresent()) {
             UserEntity user = userEntity.get();
             System.out.println(user);
