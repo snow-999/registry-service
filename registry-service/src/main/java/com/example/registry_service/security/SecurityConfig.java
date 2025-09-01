@@ -1,6 +1,6 @@
 package com.example.registry_service.security;
 
-import com.example.registry_service.fillter.JWTFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JWTFilter jwtFilter;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,22 +37,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider () {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(new BCryptPasswordEncoder());
-        provider.setUserDetailsService(userDetailsService);
-        return provider;
-    }
 
-
-    @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration configurer) throws Exception {
-        return configurer.getAuthenticationManager();
-    }
 }

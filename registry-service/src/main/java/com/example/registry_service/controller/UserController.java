@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("getemail")
     public UserDTO getEmail(@RequestBody String email) {
-//        return userService.getMyUserById();
+        return userService.getUserByEmail(email);
     }
 
 
