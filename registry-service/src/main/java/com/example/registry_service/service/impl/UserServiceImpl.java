@@ -63,18 +63,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getMyUser(long userId) {
-        UserDTO userDTO = new UserDTO();
-        boolean isUserExit = userRepository.existsById(userId);
-        if (!isUserExit) {
-            throw new UserNotFound("User Does Not Exit");
-        }
-        Optional<UserEntity> userEntity = userRepository.findById(userId);
-        if (userEntity.isPresent()) {
-            UserEntity user = userEntity.get();
-            userDTO = userConverter.convertUserEntityToDTO(user);
-        }
-        return userDTO;
+    public UserDTO getMyUserById(long userId) {
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow(()-> new UserNotFound("this user does not exist"));
+        return userConverter.convertUserEntityToDTO(userEntity);
     }
 
     @Override
@@ -109,6 +100,12 @@ public class UserServiceImpl implements UserService {
             return dto;
         }
         throw new UserNotFound("No User With This Id");
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(()-> new UserNotFound("there is no user with this email"));
+        return userConverter.convertUserEntityToDTO(user);
     }
 
     @Override

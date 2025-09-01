@@ -11,8 +11,9 @@ public interface UserService {
     TokenModel login(UserDTO userModel, HttpServletResponse response);
     UserDTO signup(UserDTO userDTO);
     void deleteUser(long userId);
-    UserDTO getMyUser(long userId);
+    UserDTO getMyUserById(long userId);
     UserDTO updateUser(UserDTO userDTO, long userId);
     List<UserDTO> getAllUsers();
     UserDTO addNewAdmin(Roles roleName, long userId);
+    UserDTO getUserByEmail(String email);
 }
