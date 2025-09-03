@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
-
-@FeignClient(name = "security-service", url = "http://auth-server:9000")
+// security-service
+@FeignClient(name = "SECURITY-SERVICE", url = "http://localhost:9000")
 public interface AuthClient {
     @PostMapping(value = "/oauth2/token")
     TokenModel getToken(@RequestBody Map<String, ?> formParams);

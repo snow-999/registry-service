@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
-        if (userDTO.getName() == null || userDTO.getEmail()== null || userDTO.getPass()== null) {
+        if (userDTO.getName() == null || userDTO.getEmail() == null || userDTO.getPass()== null) {
             throw new IllegalArgumentException("Please Enter Valid Inputs");
         }
         userDTO.setPass(passwordEncoder.encode(userDTO.getPass()));

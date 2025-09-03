@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
@@ -36,8 +36,8 @@ public class UserController {
         return userService.login(userModel, response);
     }
 
-    @GetMapping("getemail")
-    public UserDTO getEmail(@RequestBody String email) {
+    @GetMapping("getemail/{email}")
+    public UserDTO getEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
