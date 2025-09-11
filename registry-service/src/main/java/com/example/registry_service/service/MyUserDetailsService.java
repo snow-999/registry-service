@@ -4,6 +4,7 @@ import com.example.registry_service.converter.UserConverter;
 import com.example.registry_service.dto.MyUserPrincipal;
 import com.example.registry_service.dto.UserDTO;
 import com.example.registry_service.entity.UserEntity;
+import com.example.registry_service.exception.UserNotFound;
 import com.example.registry_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,13 +20,13 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserConverter userConverter;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByName(userName);
+    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByEmail(userEmail).orElseThrow(()-> new UserNotFound("there is no user with this email"));
         UserDTO model = userConverter.convertUserEntityToDTO(user);
-        if (user == null) {
-            System.out.println("User Not Found");
-            throw new UsernameNotFoundException("User Name Not Found");
-        }
+//        if (user == null) {
+//            System.out.println("User Not Found");
+//            throw new UsernameNotFoundException("User Name Not Found");
+//        }
         return new MyUserPrincipal(model);
     }
 }

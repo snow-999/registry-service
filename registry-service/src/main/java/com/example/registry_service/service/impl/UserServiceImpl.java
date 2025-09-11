@@ -2,6 +2,7 @@ package com.example.registry_service.service.impl;
 
 
 import com.example.registry_service.converter.UserConverter;
+import com.example.registry_service.dto.MyUserPrincipal;
 import com.example.registry_service.dto.Roles;
 import com.example.registry_service.dto.TokenModel;
 import com.example.registry_service.dto.UserDTO;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -110,17 +112,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenModel login(UserDTO userModel, HttpServletResponse response) {
-        if (userModel.getName() == null  || userModel.getPass()== null) {
+        if (userModel.getEmail() == null  || userModel.getPass()== null) {
             throw new IllegalArgumentException("Please Enter Valid Inputs");
         }
-        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getName(), userModel.getPass()));
+        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPass()));
         if (!authentication.isAuthenticated()) {
             throw new IllegalArgumentException();
         }
-        UserEntity entity = userRepository.findByName(userModel.getName());
-        userModel = userConverter.convertUserEntityToDTO(entity);
+//        UserDTO dto = ((MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserDTO();
+        if (authentication.getPrincipal()instanceof MyUserPrincipal) {
+            UserDTO dto1 = ((MyUserPrincipal) authentication.getPrincipal()).getUserDTO();
+        }
+//        System.err.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        UserEntity user = userRepository.findByEmail(userModel.getEmail()).orElseThrow(()-> new UserNotFound("there is no user with this email"));
+        userModel = userConverter.convertUserEntityToDTO(user);
         TokenModel token = new TokenModel();
-        System.out.println(userModel);
         token.setToken(jwtService.generateToken(userModel));
         jwtService.addJwtToCookie(token.getToken(),response);
         return token;

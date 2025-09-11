@@ -36,10 +36,10 @@ public class UserController {
         return userService.login(userModel, response);
     }
 
-    @GetMapping("getemail")
-    public UserDTO getEmail(@RequestBody String email) {
+//    @GetMapping("getemail")
+//    public UserDTO getEmail(@RequestBody String email) {
 //        return userService.getMyUserById();
-    }
+//    }
 
 
     // TODO edit user data except email
